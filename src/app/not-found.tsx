@@ -1,3 +1,4 @@
+import { PAGES } from '@/config/pages.config';
 import Link from 'next/link';
 import React from 'react';
 
@@ -8,7 +9,7 @@ export default function NotFound() {
       <p className='text-primary'>
         This page doesn&apos;t exist or has been moved.
       </p>
-      <Link href='/' className='text-sm hover:underline'>
+      <Link href={PAGES.HOME} className='text-sm hover:underline'>
         &larr; Back to home
       </Link>
     </div>

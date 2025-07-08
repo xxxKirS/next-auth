@@ -1,5 +1,6 @@
 'use client';
 
+import { PAGES } from '@/config/pages.config';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -16,7 +17,7 @@ export default function LoginButton({
   const router = useRouter();
 
   function onclick() {
-    router.push('/login');
+    router.push(PAGES.LOGIN);
   }
 
   if (mode === 'modal') {
