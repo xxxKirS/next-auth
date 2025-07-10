@@ -2,31 +2,16 @@
 
 import React from 'react';
 import CardWrapper from './CardWrapper';
-import { useForm } from 'react-hook-form';
-import { LoginSchema, LoginSchemaType } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
+import { useFormContext } from 'react-hook-form';
+import { LoginSchemaType } from '@/schemas';
+import { Form } from '../ui/form';
 import { Button } from '../ui/button';
 import FormError from '../form-error';
 import FormSuccess from '../form-success';
+import FormInput from './FormInput';
 
 export default function LoginForm() {
-  const form = useForm<LoginSchemaType>({
-    resolver: zodResolver(LoginSchema),
-    mode: 'onSubmit',
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+  const form = useFormContext<LoginSchemaType>();
 
   function onSubmit(data: LoginSchemaType) {
     console.log(data);
@@ -44,53 +29,20 @@ export default function LoginForm() {
       <Form {...form}>
         <form
           action=''
-          className='space-y-6'
+          className='space-y-4'
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <FormField
-            control={form.control}
+          <FormInput
             name='email'
-            render={({ field }) => (
-              <FormItem>
-                <div className='flex w-full justify-between flex-col sm:flex-row'>
-                  <FormLabel className='text-md font-medium text-gray-700'>
-                    Email
-                  </FormLabel>
-                  <FormMessage className='text-sm font-light' />
-                </div>
-                <FormControl>
-                  <Input
-                    autoComplete='email'
-                    placeholder='Enter your email'
-                    {...field}
-                    className='block w-full rounded-md shadow-sm sm:text-sm ring-offset-0 focus:ring-0'
-                  />
-                </FormControl>
-              </FormItem>
-            )}
+            label='Email'
+            autoComplete='email'
+            placeholder='Enter your email'
           />
-          <FormField
-            control={form.control}
+          <FormInput
             name='password'
-            render={({ field }) => (
-              <FormItem>
-                <div className='flex w-full justify-between flex-col sm:flex-row'>
-                  <FormLabel className='text-md font-medium text-gray-700'>
-                    Password
-                  </FormLabel>
-                  <FormMessage className='text-sm font-light' />
-                </div>
-                <FormControl>
-                  <Input
-                    autoComplete='password'
-                    type='password'
-                    placeholder='Enter your password'
-                    {...field}
-                    className='block w-full rounded-md shadow-sm sm:text-sm focus:ring-offset-0'
-                  />
-                </FormControl>
-              </FormItem>
-            )}
+            label='Password'
+            autoComplete='password'
+            placeholder='Enter your password'
           />
 
           <FormError message='Something went wrong' />
