@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useTransition } from 'react';
 import CardWrapper from './CardWrapper';
 import { useFormContext } from 'react-hook-form';
 import { LoginSchemaType } from '@/schemas';
@@ -9,12 +9,25 @@ import { Button } from '../ui/button';
 import FormError from '../form-error';
 import FormSuccess from '../form-success';
 import FormInput from './FormInput';
+import { login } from '@/actions/login';
 
 export default function LoginForm() {
   const form = useFormContext<LoginSchemaType>();
 
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
+
   function onSubmit(data: LoginSchemaType) {
-    console.log(data);
+    setError('');
+    setSuccess('');
+
+    startTransition(() => {
+      login(data).then((data) => {
+        setSuccess(data.success);
+        setError(data.error);
+      });
+    });
   }
 
   return (
@@ -36,19 +49,21 @@ export default function LoginForm() {
             name='email'
             label='Email'
             autoComplete='email'
+            disabled={isPending}
             placeholder='Enter your email'
           />
           <FormInput
             name='password'
             label='Password'
             autoComplete='password'
+            disabled={isPending}
             placeholder='Enter your password'
           />
 
-          <FormError message='Something went wrong' />
-          <FormSuccess message='Something went wrong' />
+          <FormError message={error} />
+          <FormSuccess message={success} />
 
-          <Button type='submit' className='w-full'>
+          <Button type='submit' className='w-full' disabled={isPending}>
             Login
           </Button>
         </form>
