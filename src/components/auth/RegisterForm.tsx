@@ -2,37 +2,38 @@
 
 import React, { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { LoginSchema, LoginSchemaType } from '@/schemas';
+import { RegisterSchema, RegisterSchemaType } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { login } from '@/actions/login';
+import { register } from '@/actions/register';
 import { PAGES } from '@/config/pages.config';
 
 import CardWrapper from './CardWrapper';
-import { Form } from '../ui/form';
-import { Button } from '../ui/button';
 import FormError from '../form-error';
 import FormSuccess from '../form-success';
 import FormInput from './FormInput';
+import { Form } from '../ui/form';
+import { Button } from '../ui/button';
 
-export default function LoginForm() {
-  const form = useForm<LoginSchemaType>({
-    resolver: zodResolver(LoginSchema),
+export default function RegisterForm() {
+  const form = useForm<RegisterSchemaType>({
+    resolver: zodResolver(RegisterSchema),
     mode: 'onSubmit',
     defaultValues: {
       email: '',
       password: '',
+      name: '',
     },
   });
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
-  function onSubmit(data: LoginSchemaType) {
+  function onSubmit(data: RegisterSchemaType) {
     setError('');
     setSuccess('');
 
     startTransition(() => {
-      login(data).then((data) => {
+      register(data).then((data) => {
         setSuccess(data.success);
         setError(data.error);
       });
@@ -41,11 +42,11 @@ export default function LoginForm() {
 
   return (
     <CardWrapper
-      headerLabel='Login'
-      headerDescription='Welcome back!'
-      backButtonLabel='Sign up'
-      backButtonDescription={`Don't have an account?`}
-      backButtonPath={PAGES.REGISTER}
+      headerLabel='Sign up'
+      headerDescription='Create your account!'
+      backButtonLabel='Login'
+      backButtonDescription={`Have an account?`}
+      backButtonPath={PAGES.LOGIN}
       showSocial={true}
     >
       <Form {...form}>
@@ -54,6 +55,13 @@ export default function LoginForm() {
           className='space-y-4'
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <FormInput
+            name='name'
+            label='Name'
+            autoComplete='name'
+            disabled={isPending}
+            placeholder='Enter your name'
+          />
           <FormInput
             name='email'
             label='Email'
@@ -73,7 +81,7 @@ export default function LoginForm() {
           <FormSuccess message={success} />
 
           <Button type='submit' className='w-full' disabled={isPending}>
-            Login
+            Create an account
           </Button>
         </form>
       </Form>

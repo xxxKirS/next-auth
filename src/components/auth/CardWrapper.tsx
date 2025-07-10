@@ -31,7 +31,7 @@ export default function CardWrapper({
   showSocial,
 }: Props) {
   return (
-    <Card className='max-w-md w-full min-w-sm'>
+    <Card className='max-w-lg w-full min-w-sm'>
       <CardHeader>
         <CardTitle className='text-3xl font-bold text-center'>
           {headerLabel}
