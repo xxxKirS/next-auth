@@ -28,7 +28,7 @@ export default function FormInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className='flex flex-col gap-0.5'>
           <div className='flex w-full justify-between flex-col sm:flex-row'>
             <FormLabel className='text-md font-medium text-gray-700'>
               {label}

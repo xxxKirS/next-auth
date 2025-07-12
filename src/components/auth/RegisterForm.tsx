@@ -72,6 +72,7 @@ export default function RegisterForm() {
           <FormInput
             name='password'
             label='Password'
+            type='password'
             autoComplete='password'
             disabled={isPending}
             placeholder='Enter your password'
