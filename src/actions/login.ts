@@ -3,7 +3,6 @@
 import { signIn } from '@/auth';
 import { getUserByEmail } from '@/data/user';
 import { LoginSchema, LoginSchemaType } from '@/schemas';
-import bcrypt from 'bcryptjs';
 import { AuthError } from 'next-auth';
 
 export async function login(values: LoginSchemaType) {
@@ -29,7 +28,7 @@ export async function login(values: LoginSchemaType) {
         case 'CredentialsSignin':
           return { error: 'Invalid login or password' };
         default:
-          return { error: 'Something went wrong' };
+          return { error: 'Confirm your email' };
       }
     }
     throw error;

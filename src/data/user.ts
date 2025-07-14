@@ -17,3 +17,12 @@ export async function getUserById(id: string) {
     return null;
   }
 }
+
+export async function getUserByName(name: string) {
+  try {
+    const user = await db.user.findFirst({ where: { name } });
+    return user;
+  } catch {
+    return null;
+  }
+}
