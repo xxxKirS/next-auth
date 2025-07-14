@@ -65,6 +65,7 @@ export default function LoginForm() {
             name='password'
             label='Password'
             autoComplete='password'
+            type='password'
             disabled={isPending}
             placeholder='Enter your password'
           />
