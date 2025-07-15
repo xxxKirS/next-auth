@@ -4,6 +4,7 @@ import { signIn } from '@/auth';
 import { getUserByEmail } from '@/data/user';
 import { LoginSchema, LoginSchemaType } from '@/schemas';
 import { AuthError } from 'next-auth';
+import { DEFAULT_LOGIN_REDIRECT } from '../routes';
 
 export async function login(values: LoginSchemaType) {
   const validatedValues = LoginSchema.safeParse(values);
@@ -21,14 +22,18 @@ export async function login(values: LoginSchemaType) {
   }
 
   try {
-    await signIn('credentials', { email, password });
+    await signIn('credentials', {
+      email,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
           return { error: 'Invalid login or password' };
         default:
-          return { error: 'Confirm your email' };
+          return { error: 'Please confirm your email' };
       }
     }
     throw error;

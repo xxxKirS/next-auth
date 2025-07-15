@@ -5,7 +5,7 @@ import {
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
-} from '../routes';
+} from './routes';
 import { NextResponse } from 'next/server';
 
 // Use only one of the two middleware options below

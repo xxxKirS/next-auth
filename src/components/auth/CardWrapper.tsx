@@ -17,7 +17,7 @@ type Props = {
   headerLabel: string;
   headerDescription?: string;
   backButtonLabel: string;
-  backButtonDescription: string;
+  backButtonDescription?: string;
   backButtonPath: string;
   showSocial?: boolean;
 };
