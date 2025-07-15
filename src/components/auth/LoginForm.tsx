@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
+
 import { useForm } from 'react-hook-form';
 import { LoginSchema, LoginSchemaType } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,9 +25,16 @@ export default function LoginForm() {
       password: '',
     },
   });
+
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Email already in use with another provider'
+      : '';
 
   function onSubmit(data: LoginSchemaType) {
     setError('');
@@ -33,8 +42,9 @@ export default function LoginForm() {
 
     startTransition(() => {
       login(data).then((data) => {
-        setSuccess(data.success);
-        setError(data.error);
+        setError(data?.error);
+        // TODO: aadd when 2FA
+        // setSuccess(data.success);
       });
     });
   }
@@ -70,7 +80,7 @@ export default function LoginForm() {
             placeholder='Enter your password'
           />
 
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <FormSuccess message={success} />
 
           <Button type='submit' className='w-full' disabled={isPending}>

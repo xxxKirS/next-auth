@@ -3,7 +3,7 @@
 import { RegisterSchema, RegisterSchemaType } from '@/schemas';
 import bcrypt from 'bcryptjs';
 import { db } from '../lib/db';
-import { getUserByEmail } from '@/data/user';
+import { getUserByEmail, getUserByName } from '@/data/user';
 
 export async function register(values: RegisterSchemaType) {
   const validatedValues = RegisterSchema.safeParse(values);
@@ -15,7 +15,10 @@ export async function register(values: RegisterSchemaType) {
   const { email, password, name } = validatedValues.data;
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const existingUser = await getUserByEmail(email);
+  const userByEmail = await getUserByEmail(email);
+  const userByName = await getUserByName(name);
+
+  const existingUser = userByEmail || userByName;
 
   if (existingUser) {
     return { error: 'User already exists' };
