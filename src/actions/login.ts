@@ -6,6 +6,7 @@ import { LoginSchema, LoginSchemaType } from '@/schemas';
 import { AuthError } from 'next-auth';
 import { DEFAULT_LOGIN_REDIRECT } from '../routes';
 import { createVerificationToken } from '@/lib/tokens';
+import { sendVerificationEmail } from '@/lib/mail';
 
 export async function login(values: LoginSchemaType) {
   const validatedValues = LoginSchema.safeParse(values);
@@ -24,6 +25,15 @@ export async function login(values: LoginSchemaType) {
 
   if (!user.emailVerified) {
     const verificationToken = await createVerificationToken(email);
+
+    if (!verificationToken) {
+      return { error: 'Error creating verification token' };
+    }
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
+    );
 
     return { success: 'Conformation email sent' };
   }
