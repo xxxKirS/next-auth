@@ -4,6 +4,7 @@ import { RegisterSchema, RegisterSchemaType } from '@/schemas';
 import bcrypt from 'bcryptjs';
 import { db } from '../lib/db';
 import { getUserByEmail, getUserByName } from '@/data/user';
+import { createVerificationToken } from '@/lib/tokens';
 
 export async function register(values: RegisterSchemaType) {
   const validatedValues = RegisterSchema.safeParse(values);
@@ -26,7 +27,9 @@ export async function register(values: RegisterSchemaType) {
 
   await db.user.create({ data: { email, password: hashPassword, name } });
 
+  const verificationToken = await createVerificationToken(email);
+
   //TODO: send verification token email
 
-  return { success: 'User created!' };
+  return { success: 'Confirmation email sent!' };
 }

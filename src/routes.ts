@@ -7,7 +7,7 @@ export const publicRoutes = ['/'];
 
 /**
  * An Array of routes that are used for authentication
- * These routes will redirect logged in users tp /settings
+ * These routes will redirect logged in users to /settings
  * @type {string[]}
  */
 export const authRoutes = ['/login', '/register', '/error'];

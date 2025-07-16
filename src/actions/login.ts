@@ -5,6 +5,7 @@ import { getUserByEmail } from '@/data/user';
 import { LoginSchema, LoginSchemaType } from '@/schemas';
 import { AuthError } from 'next-auth';
 import { DEFAULT_LOGIN_REDIRECT } from '../routes';
+import { createVerificationToken } from '@/lib/tokens';
 
 export async function login(values: LoginSchemaType) {
   const validatedValues = LoginSchema.safeParse(values);
@@ -21,6 +22,12 @@ export async function login(values: LoginSchemaType) {
     return { error: 'User not found' };
   }
 
+  if (!user.emailVerified) {
+    const verificationToken = await createVerificationToken(email);
+
+    return { success: 'Conformation email sent' };
+  }
+
   try {
     await signIn('credentials', {
       email,
@@ -33,7 +40,7 @@ export async function login(values: LoginSchemaType) {
         case 'CredentialsSignin':
           return { error: 'Invalid login or password' };
         default:
-          return { error: 'Please confirm your email' };
+          return { error: 'Something went wrong' };
       }
     }
     throw error;
