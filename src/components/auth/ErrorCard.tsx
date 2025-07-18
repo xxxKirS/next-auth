@@ -1,7 +1,17 @@
+'use client';
+
 import React from 'react';
 import CardWrapper from './CardWrapper';
+import { useSearchParams } from 'next/navigation';
+import FormError from '../form-error';
 
 export default function ErrorCard() {
+  const searchParams = useSearchParams();
+  const error =
+    searchParams.get('error') === 'AccessDenied'
+      ? 'Email already in use with another provider'
+      : 'Something went wrong';
+
   return (
     <CardWrapper
       headerLabel='Error'
@@ -9,9 +19,7 @@ export default function ErrorCard() {
       backButtonLabel='Go back'
       backButtonPath='/login'
     >
-      <p className='text-center text-destructive/65'>
-        Something went wrong, please try again.
-      </p>
+      <FormError message={error} />
     </CardWrapper>
   );
 }

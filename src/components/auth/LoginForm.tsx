@@ -43,8 +43,7 @@ export default function LoginForm() {
     startTransition(() => {
       login(data).then((data) => {
         setError(data?.error);
-        // TODO: aadd when 2FA
-        // setSuccess(data.success);
+        setSuccess(data?.success);
       });
     });
   }
