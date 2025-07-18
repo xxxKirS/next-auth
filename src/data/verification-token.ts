@@ -1,8 +1,8 @@
 import { db } from '@/lib/db';
 
-export async function getVerificationTokenByEmail(email: string) {
+export async function getVerificationTokensByEmail(email: string) {
   try {
-    const verificationToken = db.verificationToken.findFirst({
+    const verificationToken = db.verificationToken.findMany({
       where: {
         email,
       },

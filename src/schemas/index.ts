@@ -18,3 +18,8 @@ export const RegisterSchema = LoginSchema.extend({
 });
 
 export type RegisterSchemaType = zodInfer<typeof RegisterSchema>;
+
+// Reset
+export const ResetSchema = z.object({ email: z.string().email() });
+
+export type ResetSchemaType = zodInfer<typeof ResetSchema>;

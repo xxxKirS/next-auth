@@ -1,9 +1,10 @@
+import { PAGES } from '@/config/pages.config';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerificationEmail(email: string, token: string) {
-  const confirmLink = `http://localhost:3000/verify?token=${token}`;
+  const confirmLink = `http://localhost:3000/${PAGES.VERIFY}?token=${token}`;
 
   //TODO: change sender
 
@@ -12,5 +13,17 @@ export async function sendVerificationEmail(email: string, token: string) {
     to: email,
     subject: 'Please confirm your email address',
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm your email address</p>`,
+  });
+}
+export async function sendResetPasswordEmail(email: string, token: string) {
+  const resetLink = `http://localhost:3000/${PAGES.NEW_PASSWORD}?token=${token}`;
+
+  //TODO: change sender
+
+  await resend.emails.send({
+    from: 'onboarding@resend.dev',
+    to: email,
+    subject: 'Reset password',
+    html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`,
   });
 }

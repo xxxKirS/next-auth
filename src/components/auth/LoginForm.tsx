@@ -15,6 +15,7 @@ import { Button } from '../ui/button';
 import FormError from '../form-error';
 import FormSuccess from '../form-success';
 import FormInput from './FormInput';
+import Link from 'next/link';
 
 export default function LoginForm() {
   const form = useForm<LoginSchemaType>({
@@ -58,11 +59,7 @@ export default function LoginForm() {
       showSocial={true}
     >
       <Form {...form}>
-        <form
-          action=''
-          className='space-y-4'
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput
             name='email'
             label='Email'
@@ -70,14 +67,19 @@ export default function LoginForm() {
             disabled={isPending}
             placeholder='Enter your email'
           />
-          <FormInput
-            name='password'
-            label='Password'
-            autoComplete='password'
-            type='password'
-            disabled={isPending}
-            placeholder='Enter your password'
-          />
+          <div className='space-y-1'>
+            <FormInput
+              name='password'
+              label='Password'
+              autoComplete='password'
+              type='password'
+              disabled={isPending}
+              placeholder='Enter your password'
+            />
+            <Button size='sm' variant='link' className='justify-end' asChild>
+              <Link href={PAGES.FORGOT_PASSWORD}>Forgot password?</Link>
+            </Button>
+          </div>
 
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
