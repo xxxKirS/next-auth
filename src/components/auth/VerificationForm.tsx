@@ -52,18 +52,13 @@ export default function VerificationForm() {
       backButtonPath={PAGES.LOGIN}
       backButtonLabel='Go back'
     >
-      {!token && <FormError message='Invalid token' />}
-      {token && (
-        <>
-          {isPending && (
-            <div className='flex flex-col gap-4 items-center'>
-              <CircleLoader />
-            </div>
-          )}
-          {!isPending && !error && success && <FormSuccess message={success} />}
-          {!isPending && error && !success && <FormError message={error} />}
-        </>
+      {isPending && (
+        <div className='flex flex-col gap-4 items-center'>
+          <CircleLoader />
+        </div>
       )}
+      <FormError message={error} />
+      <FormSuccess message={success} />
     </CardWrapper>
   );
 }
