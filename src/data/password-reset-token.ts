@@ -13,6 +13,7 @@ export async function getPasswordResetTokenByToken(token: string) {
     return null;
   }
 }
+
 export async function getPasswordResetTokensByEmail(email: string) {
   try {
     const passwordResetToken = await db.passwordResetToken.findMany({

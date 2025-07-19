@@ -35,6 +35,8 @@ export default function ResetForm() {
       resetPassword(data).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
+
+        if (data?.success) form.reset();
       });
     });
   }

@@ -16,8 +16,8 @@ export const authRoutes = [
   PAGES.LOGIN,
   PAGES.REGISTER,
   PAGES.FORGOT_PASSWORD,
-  PAGES.ERROR,
   PAGES.NEW_PASSWORD,
+  PAGES.ERROR,
 ];
 
 /**

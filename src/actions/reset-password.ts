@@ -1,6 +1,8 @@
 'use server';
 
+import { getPasswordResetTokensByEmail } from '@/data/password-reset-token';
 import { getUserByEmail } from '@/data/user';
+import { db } from '@/lib/db';
 import { sendResetPasswordEmail } from '@/lib/mail';
 import { createPasswordResetToken } from '@/lib/tokens';
 import { ResetSchema, ResetSchemaType } from '@/schemas';
@@ -19,15 +21,28 @@ export async function resetPassword(values: ResetSchemaType) {
     return { error: 'Email not found' };
   }
 
-  const verificationToken = await createPasswordResetToken(email);
+  const existingTokens = await getPasswordResetTokensByEmail(email);
 
-  if (!verificationToken) {
+  if (
+    existingTokens &&
+    existingTokens.some((token) => token.expires > new Date())
+  ) {
+    return { error: 'Email already sent' };
+  }
+
+  const passwordResetToken = await createPasswordResetToken(email);
+
+  if (!passwordResetToken) {
     return { error: 'Error creating verification token' };
   }
 
+  existingTokens?.forEach(async (token) => {
+    await db.passwordResetToken.delete({ where: { id: token.id } });
+  });
+
   await sendResetPasswordEmail(
-    verificationToken.email,
-    verificationToken.token
+    passwordResetToken.email,
+    passwordResetToken.token
   );
 
   return { success: 'Reset email sent!' };

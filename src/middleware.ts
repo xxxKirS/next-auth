@@ -17,8 +17,6 @@ import { NextResponse } from 'next/server';
 const { auth } = NextAuth(authConfig);
 
 export const middleware = auth(async (req) => {
-  console.log(req.nextUrl.pathname);
-
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 

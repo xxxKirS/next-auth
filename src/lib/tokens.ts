@@ -13,8 +13,8 @@ export async function createVerificationToken(email: string) {
     const existingTokens = await getVerificationTokensByEmail(email);
 
     if (existingTokens) {
-      existingTokens.forEach(async (existingToken) => {
-        await db.verificationToken.delete({ where: { id: existingToken.id } });
+      existingTokens.forEach(async (token) => {
+        await db.verificationToken.delete({ where: { id: token.id } });
       });
     }
 
@@ -36,8 +36,8 @@ export async function createPasswordResetToken(email: string) {
     const existingTokens = await getPasswordResetTokensByEmail(email);
 
     if (existingTokens) {
-      existingTokens.forEach(async (existingToken) => {
-        await db.verificationToken.delete({ where: { id: existingToken.id } });
+      existingTokens.forEach(async (token) => {
+        await db.verificationToken.delete({ where: { id: token.id } });
       });
     }
 

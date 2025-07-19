@@ -1,13 +1,19 @@
 'use client';
 
 import { PAGES } from '@/config/pages.config';
-import React, { useCallback, useEffect, useState, useTransition } from 'react';
-import CardWrapper from './CardWrapper';
-import { CircleLoader } from 'react-spinners';
+import React, { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { newPassword } from '@/actions/new-password';
+import { NewPasswordSchema, type NewPasswordSchemaType } from '@/schemas';
+
+import CardWrapper from './CardWrapper';
 import FormError from '../form-error';
-import { newVerification } from '@/actions/verification';
 import FormSuccess from '../form-success';
+import FormInput from './FormInput';
+import { Form } from '../ui/form';
+import { Button } from '../ui/button';
 
 export default function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -15,55 +21,73 @@ export default function ResetPasswordForm() {
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
+  const form = useForm<NewPasswordSchemaType>({
+    resolver: zodResolver(NewPasswordSchema),
+    mode: 'onSubmit',
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
   const token = searchParams.get('token');
 
-  const onSubmit = useCallback(() => {
-    if (success || error) return;
+  function onSubmit(data: NewPasswordSchemaType) {
+    setError('');
+    setSuccess('');
 
     if (!token) {
-      setError('Invalid token');
+      setError('Invalid token 321');
       return;
     }
 
-    newVerification(token)
-      .then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
-      })
-      .catch(() => setError('Something went wrong'));
-  }, [token, success, error]);
+    startTransition(async () => {
+      await newPassword(data, token)
+        .then((data) => {
+          setError(data?.error);
+          setSuccess(data?.success);
 
-  useEffect(() => {
-    startTransition(() => {
-      onSubmit();
+          if (data?.success) form.reset();
+        })
+        .catch(() => setError('Something went wrong'));
     });
-  }, [onSubmit]);
+  }
 
   return (
     <CardWrapper
-      headerLabel='Verification'
-      headerDescription={
-        token && isPending
-          ? 'Confirming your email...'
-          : token && success
-            ? 'Email verified!'
-            : 'Something went wrong'
-      }
+      headerLabel='Reset Password'
+      headerDescription='Enter your new password'
       backButtonPath={PAGES.LOGIN}
       backButtonLabel='Go back'
     >
-      {isPending && (
-        <div className='flex flex-col gap-4 items-center'>
-          <CircleLoader />
-        </div>
-      )}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='flex flex-col gap-4'
+        >
+          <FormInput
+            name='password'
+            label='Password'
+            type='password'
+            placeholder='Password'
+            disabled={isPending}
+          />
+          <FormInput
+            name='confirmPassword'
+            label='Confirm password'
+            placeholder='Confirm password'
+            type='password'
+            disabled={isPending}
+          />
 
-      {/* {token && !error && (
-        
-      )} */}
+          <FormError message={error} />
+          <FormSuccess message={success} />
 
-      <FormError message={error} />
-      <FormSuccess message={success} />
+          <Button type='submit' disabled={isPending}>
+            Reset Password
+          </Button>
+        </form>
+      </Form>
     </CardWrapper>
   );
 }

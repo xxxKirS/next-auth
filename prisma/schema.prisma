@@ -52,8 +52,8 @@ model VerificationToken {
   expires DateTime
 
   @@unique([email, token])
+   @@map("verification_tokens")
 }
-
 model PasswordResetToken {
   id String @id @default(cuid())
   email String
@@ -61,4 +61,5 @@ model PasswordResetToken {
   expires DateTime
 
   @@unique([email, token])
+  @@map("password_reset_tokens")
 }
