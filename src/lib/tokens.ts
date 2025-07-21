@@ -2,8 +2,11 @@ import { getVerificationTokensByEmail } from '@/data/verification-token';
 import { getPasswordResetTokensByEmail } from '@/data/password-reset-token';
 import { db } from './db';
 import { v4 as uuidv4 } from 'uuid';
+import crypto from 'crypto';
+import { getTwoFactorTokensByEmail } from '@/data/two-factor-token';
 
 const EXPIRES_IN = 60 * 60 * 1000;
+const TWO_FACTOR_TOKEN_EXPIRES = 15 * 60 * 1000;
 
 export async function createVerificationToken(email: string) {
   try {
@@ -46,6 +49,29 @@ export async function createPasswordResetToken(email: string) {
     });
 
     return passwordResetToken;
+  } catch {
+    return null;
+  }
+}
+
+export async function createTwoFactorToken(email: string) {
+  try {
+    const token = crypto.randomInt(0, 999_999).toString().padStart(6, '0');
+    const expires = new Date(Date.now() + TWO_FACTOR_TOKEN_EXPIRES); // token expires in 15 minutes
+
+    const existingTokens = await getTwoFactorTokensByEmail(email);
+
+    if (existingTokens) {
+      existingTokens.forEach(async (token) => {
+        await db.verificationToken.delete({ where: { id: token.id } });
+      });
+    }
+
+    const twoFactorToken = await db.twoFactorToken.create({
+      data: { email, token, expires },
+    });
+
+    return twoFactorToken;
   } catch {
     return null;
   }
