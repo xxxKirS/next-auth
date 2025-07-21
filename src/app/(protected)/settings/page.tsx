@@ -4,7 +4,7 @@ import React from 'react';
 
 export default async function SettingsPage() {
   return (
-    <div className='flex flex-col bg-background rounded-md px-8 py-12'>
+    <div className='bg-background rounded-md px-8 py-12'>
       <h1>Settings</h1>
       <form
         action={async () => {
