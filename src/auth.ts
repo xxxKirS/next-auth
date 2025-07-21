@@ -25,18 +25,22 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (!existingUser || !existingUser.emailVerified) return false;
 
-      //TODO: add 2FA check
+      // Add 2FA check
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationById(
           existingUser.id
         );
 
-        if (!twoFactorConfirmation) return false;
+        if (twoFactorConfirmation) {
+          // Delete 2fc for next sign in
+          await db.twoFactorConfirmation.delete({
+            where: { id: twoFactorConfirmation.id },
+          });
 
-        //TODO: delete 2fc for next sign in
-        await db.twoFactorConfirmation.delete({
-          where: { id: twoFactorConfirmation.id },
-        });
+          return true;
+        }
+
+        if (!twoFactorConfirmation) return false;
       }
 
       return true;
