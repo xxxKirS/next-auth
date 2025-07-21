@@ -1,6 +1,7 @@
 export const PAGES = {
   HOME: '/',
 
+  //Auth
   LOGIN: '/login',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/reset-password',
@@ -8,5 +9,10 @@ export const PAGES = {
   ERROR: '/error',
   VERIFY: '/verify',
 
+  //Protected
   SETTINGS: '/settings',
+  PROFILE: '/profile',
+  SERVER: '/server',
+  CLIENT: '/client',
+  ADMIN: '/admin',
 };
