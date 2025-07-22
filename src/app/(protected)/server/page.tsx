@@ -1,9 +1,9 @@
-import { auth } from '@/auth';
 import UserInfo from '@/components/user-info';
-import React from 'react';
+
+import { serverCurrentUser } from '@/lib/server-current-user';
 
 export default async function ServerPage() {
-  const session = await auth();
+  const user = await serverCurrentUser();
 
-  return <UserInfo user={session!.user} label='Server component' />;
+  return <UserInfo user={user!} label='Server component' />;
 }
