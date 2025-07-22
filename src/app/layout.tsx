@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
+import { Toaster } from 'sonner';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={`${poppins.className} antialiased`}>
         <SessionProvider session={session}>
+          <Toaster />
           <div className='min-h-screen flex flex-col gap-y-4'>{children}</div>
         </SessionProvider>
       </body>
