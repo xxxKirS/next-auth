@@ -9,14 +9,17 @@ declare module 'next-auth' {
     id: string;
     role: UserRole;
     isTwoFactorEnabled: boolean;
+    isOAuth: boolean;
+    noPassword: boolean;
   }
 
   interface Session {
     user: {
       /** The user's postal address. */
-      id: string;
-      role: UserRole;
-      isTwoFactorEnabled: boolean;
+      // id: string;
+      // role: UserRole;
+      // isTwoFactorEnabled: boolean;
+      // isOAuth: boolean;
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.
        * In this case, the default session user properties will be overwritten,
@@ -35,5 +38,7 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     role?: UserRole;
     isTwoFactorEnabled?: boolean;
+    isOAuth?: boolean;
+    noPassword: boolean;
   }
 }

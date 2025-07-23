@@ -12,5 +12,14 @@ export default function LogoutButton({
   async function onClick() {
     await signOut();
   }
-  return <Button onClick={onClick}>{children}</Button>;
+  return (
+    <Button
+      onClick={onClick}
+      asChild
+      className='w-full justify-start'
+      variant='ghost'
+    >
+      {children}
+    </Button>
+  );
 }

@@ -16,9 +16,9 @@ type Props = {
   children: React.ReactNode;
   headerLabel: string;
   headerDescription?: string;
-  backButtonLabel: string;
+  backButtonLabel?: string;
   backButtonDescription?: string;
-  backButtonPath: string;
+  backButtonPath?: string;
   showSocial?: boolean;
 };
 export default function CardWrapper({

@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={`${poppins.className} antialiased`}>
         <SessionProvider session={session}>
-          <Toaster />
+          <Toaster theme='dark' />
           <div className='min-h-screen flex flex-col gap-y-4'>{children}</div>
         </SessionProvider>
       </body>

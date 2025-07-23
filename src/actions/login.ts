@@ -10,8 +10,14 @@ import { sendTwoFactorTokenEmail, sendVerificationEmail } from '@/lib/mail';
 import { getTwoFactorTokensByEmail } from '@/data/two-factor-token';
 import { db } from '@/lib/db';
 import { getTwoFactorConfirmationById } from '@/data/two-factor-confirmation';
+import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { PAGES } from '@/config/pages.config';
 
-export async function login(values: LoginSchemaType) {
+export async function login(
+  values: LoginSchemaType,
+  callbackUrl?: string | null
+) {
   const validatedValues = LoginSchema.safeParse(values);
 
   if (!validatedValues.success) {
@@ -92,14 +98,19 @@ export async function login(values: LoginSchemaType) {
     }
   }
 
+  console.log(callbackUrl);
+
   try {
     await signIn('credentials', {
       email,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirect: false,
     });
   } catch (error) {
+    console.log(error);
+
     if (error instanceof AuthError) {
+      console.log(error.type);
       switch (error.type) {
         case 'CredentialsSignin':
           return { error: 'Invalid login or password' };
@@ -109,4 +120,8 @@ export async function login(values: LoginSchemaType) {
     }
     throw error;
   }
+
+  revalidatePath(callbackUrl || DEFAULT_LOGIN_REDIRECT);
+  revalidatePath(PAGES.CLIENT);
+  redirect(callbackUrl || DEFAULT_LOGIN_REDIRECT);
 }

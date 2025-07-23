@@ -36,6 +36,8 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  const callbackUrl = searchParams.get('callbackUrl');
   const urlError =
     searchParams.get('error') === 'OAuthAccountNotLinked'
       ? 'Email already in use with another provider'
@@ -47,7 +49,7 @@ export default function LoginForm() {
     setSuccess('');
 
     startTransition(() => {
-      login(data)
+      login(data, callbackUrl)
         .then((data) => {
           if (data?.error) {
             setError(data.error);
