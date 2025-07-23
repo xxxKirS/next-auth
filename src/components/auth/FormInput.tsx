@@ -30,16 +30,18 @@ export default function FormInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className='flex flex-col gap-1'>
           <div className='flex w-full justify-between flex-col sm:flex-row'>
-            <FormLabel className='text-md font-medium text-gray-700 pl-1'>
+            <FormLabel className='text-md font-medium text-gray-700'>
               {label}
             </FormLabel>
             <FormMessage className='text-sm font-light' />
           </div>
           <FormControl>
             <Input
-              {...props}
               {...field}
-              className='block w-full rounded-md shadow-sm sm:text-sm ring-offset-0 focus:ring-0'
+              className={
+                'block w-full rounded-md shadow-sm sm:text-sm ring-offset-0 focus:ring-0'
+              }
+              {...props}
             />
           </FormControl>
         </FormItem>
