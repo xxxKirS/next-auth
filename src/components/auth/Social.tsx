@@ -6,11 +6,15 @@ import { SOCIALS } from '@/config/socials.config';
 import { TSOCIALS } from '@/types/types';
 import { signIn } from 'next-auth/react';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { useSearchParams } from 'next/navigation';
 
 const Social = memo(function Social() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
+
   async function handleClick(provider: TSOCIALS['name']) {
     signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
   }
 

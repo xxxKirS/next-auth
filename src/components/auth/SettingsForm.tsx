@@ -113,15 +113,17 @@ export default function SettingsForm() {
             <FormInput
               name='password'
               label='Password'
-              placeholder='**********'
+              placeholder='Enter your password'
               type='password'
+              autoComplete='off'
               disabled={isPending || user.noPassword}
             />
             <FormInput
               name='newPassword'
               label='New Password'
-              placeholder='**********'
+              placeholder='Enter your new password'
               type='password'
+              autoComplete='off'
               disabled={isPending}
             />
             <FormField
