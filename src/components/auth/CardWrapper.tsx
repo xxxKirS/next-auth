@@ -55,10 +55,12 @@ export default function CardWrapper({
       )}
       <CardFooter className='flex items-center justify-center'>
         <CardDescription>{backButtonDescription}</CardDescription>
-        <BackButton
-          backButtonLabel={backButtonLabel}
-          backButtonPath={backButtonPath}
-        />
+        {backButtonLabel && backButtonPath && (
+          <BackButton
+            backButtonLabel={backButtonLabel}
+            backButtonPath={backButtonPath}
+          />
+        )}
       </CardFooter>
     </Card>
   );
