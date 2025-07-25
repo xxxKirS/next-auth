@@ -3,8 +3,10 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const domain = process.env.NEXT_PUBLIC_APP_URL;
+
 export async function sendVerificationEmail(email: string, token: string) {
-  const confirmLink = `http://localhost:3000/${PAGES.VERIFY}?token=${token}`;
+  const confirmLink = `${domain}/${PAGES.VERIFY}?token=${token}`;
 
   //TODO: change sender
 
@@ -16,7 +18,7 @@ export async function sendVerificationEmail(email: string, token: string) {
   });
 }
 export async function sendResetPasswordEmail(email: string, token: string) {
-  const resetLink = `http://localhost:3000/${PAGES.NEW_PASSWORD}?token=${token}`;
+  const resetLink = `${domain}/${PAGES.NEW_PASSWORD}?token=${token}`;
 
   //TODO: change sender
 
