@@ -63,7 +63,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         session.user.name = token.name;
         session.user.email = token.email!;
         session.user.isOAuth = token.isOAuth!;
-        session.user.noPassword = token.noPassword!;
+        session.user.noPassword = token.noPassword;
       }
 
       return session;
@@ -78,7 +78,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       const existingAccount = await getAccountById(existingUser.id);
 
       token.isOAuth = !!existingAccount;
-      token.noPassword = !!existingUser.password;
+      token.noPassword = !existingUser.password;
       token.name = existingUser.name;
       token.email = existingUser.email;
       token.role = existingUser.role;
