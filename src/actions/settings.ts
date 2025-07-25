@@ -75,7 +75,6 @@ export async function settings(values: SettingsSchemaType) {
         values.password,
         dbUser.password
       );
-      console.log(passwordsMatch);
 
       if (!passwordsMatch) {
         return { errors: { password: 'Incorrect password' } };

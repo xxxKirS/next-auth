@@ -29,7 +29,7 @@ export async function newPassword(
   const existingToken = await getPasswordResetTokenByToken(token);
 
   if (!existingToken) {
-    return { error: 'Invalid token 222' };
+    return { error: 'Invalid token' };
   }
 
   const hasExpired = new Date(existingToken.expires) < new Date();
